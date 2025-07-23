@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customize Your Jewellery Store - Maharana Silver</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Playfair Display', serif;
+      font-weight: 400;
+    }
+    
+    .text-maroon {
+      color: #722F37;
+    }
+    
+    .border-maroon {
+      border-color: #722F37;
+    }
+    
+    .hover-maroon:hover {
+      background: #722F37;
+      color: white;
+    }
+    
+    .glass-effect {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .jewel-shadow {
+      box-shadow: 0 25px 50px -12px rgba(114, 47, 55, 0.25);
+    }
+    
+    .scroll-smooth {
+      scroll-behavior: smooth;
+    }
+    
+    .floating {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .fade-in {
+      animation: fadeIn 1s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Form Styles */
+    .form-input {
+      transition: all 0.3s ease;
+      border: 2px solid #e5e7eb;
+    }
+    
+    .form-input:focus {
+      border-color: #722F37;
+      box-shadow: 0 0 0 3px rgba(114, 47, 55, 0.1);
+      outline: none;
+    }
+    
+    .file-input-wrapper {
+      position: relative;
+      display: block;
+      width: 100%;
+    }
+    
+    .file-input-display {
+      padding: 12px 16px;
+      border: 2px dashed #e5e7eb;
+      border-radius: 12px;
+      text-align: center;
+      transition: all 0.3s ease;
+      background: #fafafa;
+      cursor: pointer;
+    }
+    
+    .file-input-display:hover {
+      border-color: #722F37;
+      background: rgba(114, 47, 55, 0.05);
+    }
+    
+    .file-input-display.has-file {
+      border-color: #722F37;
+      background: rgba(114, 47, 55, 0.05);
+      border-style: solid;
+    }
+    
+    /* Theme Card Styles */
+    .theme-card {
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .theme-card.selected {
+      border-color: #722F37;
+      box-shadow: 0 0 0 3px rgba(114, 47, 55, 0.1);
+    }
+    
+    .theme-slider {
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .theme-slider-inner {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+    
+    .theme-slide {
+      min-width: 100%;
+      height: 200px;
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .slider-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid #e5e7eb;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+    }
+    
+    .slider-arrow:hover {
+      background: #722F37;
+      color: white;
+    }
+    
+    .prev-arrow {
+      left: 10px;
+    }
+    
+    .next-arrow {
+      right: 10px;
+    }
+    
+    /* Mobile Sidebar Styles */
+    .sidebar {
+      transform: translateX(-100%);
+      transition: transform 0.3s ease-in-out;
+    }
+    
+    .sidebar.open {
+      background-color: maroon;
+      transform: translateX(0);
+    }
+    
+    .sidebar-overlay {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.1s ease-in-out, visibility 0.3s ease-in-out;
+    }
+    
+    .sidebar-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .menu-item {
+      transform: translateX(-20px);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    
+    .sidebar.open .menu-item {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    
+    .sidebar.open .menu-item:nth-child(1) { transition-delay: 0.1s; }
+    .sidebar.open .menu-item:nth-child(2) { transition-delay: 0.2s; }
+    .sidebar.open .menu-item:nth-child(3) { transition-delay: 0.3s; }
+    .sidebar.open .menu-item:nth-child(4) { transition-delay: 0.4s; }
+  </style>
+</head>
+<body class="bg-white text-gray-800 scroll-smooth">
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden" onclick="closeSidebar()"></div>
+  
+  <!-- Mobile Sidebar -->
+  <div class="sidebar fixed top-0 left-0 h-full w-80 bg-maroon z-50 md:hidden">
+    <div class="p-6">
+      <!-- Sidebar Header -->
+      <div class="flex justify-between items-center mb-12">
+        <div class="text-2xl font-normal text-white">Maharana Silver</div>
+        <button onclick="closeSidebar()" class="text-white hover:text-opacity-80 transition">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Sidebar Menu -->
+      <nav class="space-y-6">
+        <a href="index.html" onclick="closeSidebar()" class="menu-item block text-white text-xl font-normal py-3 hover:text-opacity-80 transition border-b border-white border-opacity-20">
+          Home
+        </a>
+        <a href="#" onclick="closeSidebar()" class="menu-item block text-white text-xl font-normal py-3 hover:text-opacity-80 transition border-b border-white border-opacity-20">
+          Support
+        </a>
+        <a href="#" onclick="closeSidebar()" class="menu-item block text-white text-xl font-normal py-3 hover:text-opacity-80 transition border-b border-white border-opacity-20">
+          Documentation
+        </a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-30 glass-effect">
+    <div class="container mx-auto px-6 py-4">
+      <div class="flex justify-between items-center">
+        <a href="index.html" class="text-2xl font-normal text-maroon">Maharana Silver</a>
+        <div class="hidden md:flex space-x-8">
+          <a href="index.html" class="text-gray-700 hover:text-maroon font-normal transition">Home</a>
+          <a href="#" class="text-gray-700 hover:text-maroon font-normal transition">Support</a>
+          <a href="#" class="text-gray-700 hover:text-maroon font-normal transition">Documentation</a>
+        </div>
+        <button onclick="openSidebar()" class="md:hidden text-gray-700 hover:text-maroon transition">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="pt-32 pb-16 bg-gray-100">
+    <div class="container mx-auto px-6">
+      <div class="text-center fade-in">
+        <h1 class="text-5xl md:text-6xl font-normal text-maroon mb-6">
+          Customize Your Store
+        </h1>
+        <p class="text-xl font-normal text-gray-600 mb-8 max-w-3xl mx-auto">
+          Upload your logo and configure your API settings to generate your personalized jewellery store
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Customization Form -->
+  <section class="py-16">
+    <div class="container mx-auto px-6">
+      <div class="max-w-2xl mx-auto">
+        
+        <!-- Main Form Card -->
+        <div class="bg-white rounded-3xl jewel-shadow p-12">
+          <form id="customizeForm">
+            
+<!-- Logo Upload -->
+<div class="mb-8">
+  <label class="block text-gray-800 font-normal text-lg mb-4">Upload Your Logo</label>
+  <div class="file-input-wrapper">
+    <input type="file" id="logoInput" accept="image/png" required class="form-input" />
+    <div class="file-input-display" id="fileDisplay" onclick="document.getElementById('logoInput').click()">
+      <div class="flex flex-col items-center py-6">
+        <svg class="w-12 h-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+        </svg>
+        <p class="text-gray-600 font-normal text-center">
+          <span class="text-maroon font-medium">Click to upload</span> or drag and drop<br>
+          <span class="text-sm">PNG file • Transparent background • Max 2MB</span><br>
+          <span class="text-sm">Recommended size: <strong>360×96 px</strong></span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+            <!-- Company ID -->
+            <div class="mb-8">
+              <label for="companyId" class="block text-gray-800 font-normal text-lg mb-4">Company ID</label>
+              <input type="text" id="companyId" placeholder="e.g., mycompany123" required 
+                     class="form-input w-full px-6 py-4 rounded-xl font-normal text-lg">
+              <p class="text-gray-500 text-sm mt-2 font-normal">A unique identifier for your store</p>
+            </div>
+
+            <!-- API URL -->
+            <div class="mb-10">
+              <label for="apiUrl" class="block text-gray-800 font-normal text-lg mb-4">API URL</label>
+              <input type="text" id="apiUrl" placeholder="e.g., https://api.mycompany.com" required 
+                     class="form-input w-full px-6 py-4 rounded-xl font-normal text-lg">
+              <p class="text-gray-500 text-sm mt-2 font-normal">The endpoint URL for your store's API</p>
+            </div>
+
+            <!-- Theme Selection -->
+            <div class="mb-10">
+              <label class="block text-gray-800 font-normal text-lg mb-4">Select Theme</label>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="theme-card" onclick="selectTheme('basic')">
+                  <div class="theme-slider relative">
+                    <div class="theme-slider-inner" style="transform: translateX(0%);">
+                      <div class="theme-slide" style="background-image: url('https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                      <div class="theme-slide" style="background-image: url('https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                    </div>
+                    <div class="slider-arrow prev-arrow" onclick="prevSlide('basic'); event.stopPropagation();">
+                      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                      </svg>
+                    </div>
+                    <div class="slider-arrow next-arrow" onclick="nextSlide('basic'); event.stopPropagation();">
+                      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="p-4 text-center">
+                    <h3 class="text-lg font-normal text-gray-800">Basic Theme</h3>
+                  </div>
+                </div>
+                <div class="theme-card" onclick="selectTheme('luxury')">
+                  <div class="theme-slider relative">
+                    <div class="theme-slider-inner" style="transform: translateX(0%);">
+                      <div class="theme-slide" style="background-image: url('https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                      <div class="theme-slide" style="background-image: url('https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                    </div>
+                    <div class="slider-arrow prev-arrow" onclick="prevSlide('luxury'); event.stopPropagation();">
+                      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                      </svg>
+                    </div>
+                    <div class="slider-arrow next-arrow" onclick="nextSlide('luxury'); event.stopPropagation();">
+                      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="p-4 text-center">
+                    <h3 class="text-lg font-normal text-gray-800">Luxury Theme</h3>
+                  </div>
+                </div>
+              </div>
+              <input type="hidden" id="themeSelect" name="themeSelect" value="basic">
+              <p class="text-gray-500 text-sm mt-2 font-normal">Choose a theme that matches your brand</p>
+            </div>
+
+            <!-- Generate Button -->
+ <button type="submit" class="w-full bg-red-900 text-white font-bold text-lg py-5 px-8 rounded-xl hover:shadow-xl transition-all duration-300">
+  <div class="flex items-center justify-center">
+    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+    </svg>
+    Generate & Download
+  </div>
+</button>
+
+          </form>
+        </div>
+
+        <!-- Info Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+          <div class="bg-white rounded-2xl p-6 text-center jewel-shadow">
+            <div class="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+              <svg class="w-8 h-8 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            </div>
+            <h3 class="text-lg font-normal text-gray-800 mb-2">Instant Generation</h3>
+            <p class="text-gray-600 font-normal text-sm">Your customized store is ready in seconds</p>
+          </div>
+          
+          <div class="bg-white rounded-2xl p-6 text-center jewel-shadow">
+            <div class="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+              <svg class="w-8 h-8 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+              </svg>
+            </div>
+            <h3 class="text-lg font-normal text-gray-800 mb-2">Secure & Private</h3>
+            <p class="text-gray-600 font-normal text-sm">Your data stays safe and confidential</p>
+          </div>
+          
+          <div class="bg-white rounded-2xl p-6 text-center jewel-shadow">
+            <div class="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+              <svg class="w-8 h-8 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-lg font-normal text-gray-800 mb-2">Made with Care</h3>
+            <p class="text-gray-600 font-normal text-sm">Crafted for luxury jewellery businesses</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Floating Background Elements -->
+  <div class="fixed top-1/4 left-1/4 w-64 h-64 bg-maroon rounded-full opacity-5 floating pointer-events-none"></div>
+  <div class="fixed bottom-1/4 right-1/4 w-96 h-96 bg-maroon rounded-full opacity-5 floating pointer-events-none" style="animation-delay: -3s;"></div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script src="script.js"></script>
+  
+  <script>
+    // Mobile sidebar functions
+    function openSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      const overlay = document.querySelector('.sidebar-overlay');
+      
+      sidebar.classList.add('open');
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      const overlay = document.querySelector('.sidebar-overlay');
+      
+      sidebar.classList.remove('open');
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    
+    // File input handling
+    document.getElementById('logoInput').addEventListener('change', function(e) {
+      const display = document.getElementById('fileDisplay');
+      const file = e.target.files[0];
+      
+      if (file) {
+        display.classList.add('has-file');
+        display.innerHTML = `
+          <div class="flex items-center justify-center py-6">
+            <svg class="w-8 h-8 text-maroon mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <div>
+              <p class="text-maroon font-medium">${file.name}</p>
+              <p class="text-gray-500 text-sm">${(file.size / 1024 / 1024).toFixed(2)} MB</p>
+            </div>
+          </div>
+        `;
+      }
+    });
+    
+    // Theme selection and slider
+    let currentSlide = {
+      basic: 0,
+      luxury: 0
+    };
+
+    function selectTheme(theme) {
+      document.querySelectorAll('.theme-card').forEach(card => card.classList.remove('selected'));
+      const selectedCard = document.querySelector(`.theme-card[onclick="selectTheme('${theme}')"]`);
+      selectedCard.classList.add('selected');
+      document.getElementById('themeSelect').value = theme;
+    }
+
+    function nextSlide(theme) {
+      const sliderInner = document.querySelector(`.theme-card[onclick="selectTheme('${theme}')"] .theme-slider-inner`);
+      const slides = sliderInner.children.length;
+      currentSlide[theme] = (currentSlide[theme] + 1) % slides;
+      sliderInner.style.transform = `translateX(-${currentSlide[theme] * 100}%)`;
+    }
+
+    function prevSlide(theme) {
+      const sliderInner = document.querySelector(`.theme-card[onclick="selectTheme('${theme}')"] .theme-slider-inner`);
+      const slides = sliderInner.children.length;
+      currentSlide[theme] = (currentSlide[theme] - 1 + slides) % slides;
+      sliderInner.style.transform = `translateX(-${currentSlide[theme] * 100}%)`;
+    }
+
+    // Close sidebar on window resize
+    window.addEventListener('resize', function() {
+      if (window.innerWidth >= 768) {
+        closeSidebar();
+      }
+    });
+  </script>
+</body>
+</html>

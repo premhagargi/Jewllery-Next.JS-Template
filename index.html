@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jewellery Web App Customizer - Premium Template</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=TikTok+Sans:opsz,wght@12..36,300..900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&TikTok+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Playfair Display', serif;
+      font-weight: 400;
+      background: white;
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* Custom Scrollbar Styles */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: #9A602E;
+      border-radius: 5px;
+      border: 2px solid rgba(255, 255, 255, 0.95);
+      transition: background 0.3s ease;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: #68380f;
+    }
+    
+    /* Firefox Scrollbar */
+    html {
+      scrollbar-color: #9A602E rgba(255, 255, 255, 0.1);
+      scrollbar-width: thin;
+    }
+    
+    .text-maroon {
+      color: #722F37;
+    }
+    
+    .border-maroon {
+      border-color: #722F37;
+    }
+    
+    .hover-maroon:hover {
+      background: #722F37;
+      color: white;
+    }
+    
+    .glass-effect {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .fade-in {
+      animation: fadeIn 1s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+  @keyframes scaleDot {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.6);
+    }
+  }
+
+  .dot-animate {
+    animation: scaleDot 1.2s infinite ease-in-out;
+  }
+
+    .gradient-text {
+      color: #9A602E;
+    }
+    
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background: #722F37;
+      transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    
+    .jewel-shadow {
+      box-shadow: 0 25px 50px -12px rgba(114, 47, 55, 0.25);
+    }
+    
+    .scroll-smooth {
+      scroll-behavior: smooth;
+    }
+    
+    /* Mobile Sidebar Styles */
+    .sidebar {
+      transform: translateX(-100%);
+      transition: transform 0.3s ease-in-out;
+      background: #722F37;
+    }
+    
+    .sidebar.open {
+      transform: translateX(0);
+    }
+    
+    .sidebar-overlay {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    }
+    
+    .sidebar-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .menu-item {
+      transform: translateX(-20px);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    
+    .sidebar.open .menu-item {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    
+    .sidebar.open .menu-item:nth-child(1) { transition-delay: 0.1s; }
+    .sidebar.open .menu-item:nth-child(2) { transition-delay: 0.2s; }
+    .sidebar.open .menu-item:nth-child(3) { transition-delay: 0.3s; }
+    .sidebar.open .menu-item:nth-child(4) { transition-delay: 0.4s; }
+    .sidebar.open .menu-item:nth-child(5) { transition-delay: 0.5s; }
+
+    /* Hero and Navbar Styles */
+    .hero-background {
+      background: url('/public/assets/heroimage.jpg') no-repeat center 20% / cover;
+      position: relative;
+      margin: 10px 10px;
+      padding: 20px;
+      border-radius: 20px;
+      min-height: 97vh;
+    }
+
+    @media (max-width: 768px) {
+      .hero-background {
+        min-height: 56vh;
+      }
+    }
+
+    .navbar {
+      background: transparent;
+      position: absolute;
+      width: 100%;
+      z-index: 30;
+      transition: background-color 0.3s ease;
+    }
+
+    .navbar .nav-link,
+    .navbar .gradient-text {
+      color: white !important;
+    }
+
+    .navbar .nav-link:hover::after {
+      background: white;
+    }
+
+    /* Fixed Navbar for Scroll */
+    .navbar-fixed {
+      background: rgba(0, 0, 0, 0.8);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 30;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-100%);
+      transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+    }
+
+    .navbar-fixed.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .navbar-fixed .nav-link,
+    .navbar-fixed .gradient-text {
+      color: white !important;
+    }
+
+    .navbar-fixed .nav-link:hover::after {
+      background: white;
+    }
+
+    /* Mobile Navbar Spacing */
+    @media (max-width: 768px) {
+      .navbar .container,
+      .navbar-fixed .container {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+    }
+
+    .hero-content {
+      color: white;
+      padding-top: 20px;
+    }
+
+    .hero-content .gradient-text {
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .hero-content a {
+      color: #000;
+      background: white;
+      border-color: white;
+    }
+
+    .hero-content a:hover {
+      background: #722F37;
+      color: white;
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-800 scroll-smooth">
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden" onclick="closeSidebar()"></div>
+  
+  <!-- Mobile Sidebar -->
+  <div class="sidebar fixed top-0 left-0 h-full w-80 z-50 md:hidden">
+    <div class="p-6">
+      <!-- Sidebar Header -->
+      <div class="flex justify-between items-center mb-12">
+        <div class="text-2xl font-normal text-white">Maharana Silver</div>
+        <button onclick="closeSidebar()" class="text-white hover:text-opacity-80 transition">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Sidebar Menu -->
+      <nav class="space-y-6">
+        <a href="#features" onclick="closeSidebar()" class="menu-item block text-white text-xl font-normal py-3 hover:text-opacity-80 transition border-b border-white border-opacity-20">
+          Features
+        </a>
+        <a href="#themes" onclick="closeSidebar()" class="menu-item block text-white text-xl font-normal py-3 hover:text-opacity-80 transition border-b border-white border-opacity-20">
+          Themes
+        </a>
+        <a href="#customize" onclick="closeSidebar()" class="menu-item block text-white text-xl font-normal py-3 hover:text-opacity-80 transition border-b border-white border-opacity-20">
+          Customize
+        </a>
+        <a href="#contact" onclick="closeSidebar()" class="menu-item block text-white text-xl font-normal py-3 hover:text-opacity-80 transition border-b border-white border-opacity-20">
+          Contact
+        </a>
+        <a href="customize.html" onclick="closeSidebar()" class="menu-item block bg-white text-maroon text-xl font-medium py-4 px-6 rounded-full text-center mt-8 hover:bg-opacity-90 transition">
+          Start Now
+        </a>
+      </nav>
+    </div>
+  </div>
+  
+  <!-- Hero Navbar -->
+  <nav id="navbar" class="navbar">
+<div class="container mx-auto py-4  md:py-4">
+      <div class="flex justify-between items-center px-6">
+        <div class="text-2xl font-normal gradient-text">Maharana Silver</div>
+        <div class="hidden md:flex space-x-8">
+          <a href="#features" class="nav-link text-white hover:text-maroon font-normal">Features</a>
+          <a href="#themes" class="nav-link text-white hover:text-maroon font-normal">Themes</a>
+          <a href="#customize" class="nav-link text-white hover:text-maroon font-normal">Customize</a>
+          <a href="#contact" class="nav-link text-white hover:text-maroon font»
+
+System: -normal">Contact</a>
+        </div>
+        <button onclick="openSidebar()" class="md:hidden text-white hover:text-maroon transition">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Fixed Navbar (appears on scroll) -->
+  <nav id="navbar-fixed" class="navbar-fixed">
+    <div class="container mx-auto py-6">
+      <div class="flex justify-between items-center">
+        <div class="text-2xl font-normal gradient-text">Maharana Silver</div>
+        <div class="hidden md:flex space-x-8">
+          <a href="#features" class="nav-link text-white hover:text-maroon font-normal">Features</a>
+          <a href="#themes" class="nav-link text-white hover:text-maroon font-normal">Themes</a>
+          <a href="#customize" class="nav-link text-white hover:text-maroon font-normal">Customize</a>
+          <a href="#contact" class="nav-link text-white hover:text-maroon font-normal">Contact</a>
+        </div>
+        <button onclick="openSidebar()" class="md:hidden text-white hover:text-maroon transition">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+<section class="hero-background">
+  <div class="container mx-auto px-6 relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <!-- Text Content -->
+<div class="fade-in hero-content mt-20 lg:pt-20">
+        <h1 class="text-4xl sm:text-5xl lg:text-8xl font-thin mb-8 leading-tight">
+          <span class="gradient-text">Craft Exquisite Experiences</span><br>
+          <span class="gradient-text"></span>
+        </h1>
+        <p class="text-xl sm:text-xl lg:text-3xl font-normal text-white mb-8 leading-relaxed italic">
+          Launch your premium jewellery business with our meticulously crafted Next.js template. Designed for perfection, built for success.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="#features" class="inline-block border-2 border-white text-white font-normal text-lg py-4 px-8 rounded-full hover-maroon transition-all duration-300 text-center">
+            Explore Features
+          </a>
+        </div>
+      </div>
+      
+      <!-- Hero Image -->
+      <div class="relative hidden lg:block">
+        <div class="jewel-shadow rounded-3xl overflow-hidden">
+          <!-- The image is part of the background -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+    <div class="animate-bounce">
+      <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+      </svg>
+    </div>
+  </div>
+</section>
+
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 bg-white">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-16">
+          <h2 class="text-5xl font-normal gradient-text mb-6">Exceptional by Design</h2>
+          <p class="text-xl font-normal text-gray-600 max-w-3xl mx-auto">
+            Every detail crafted with precision to deliver an unparalleled digital experience
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div class="text-center group">
+     <div class="w-24 h-24 mx-auto mb-8 bg-gray-100 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+  <svg class="w-12 h-12 text-maroon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M6 13.5V3.75m0 9.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 9.75V10.5"/>
+  </svg>
+</div>
+            <h3 class="text-2xl font-normal text-gray-800 mb-4">Infinitely Customizable</h3>
+            <p class="text-gray-600 font-normal leading-relaxed">
+              Transform every element to reflect your unique brand identity with intuitive customization tools
+            </p>
+          </div>
+          
+          <div class="text-center group">
+            <div class="w-24 h-24 mx-auto mb-8 bg-gray-100 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <svg class="w-12 h-12 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-normal text-gray-800 mb-4">Device Perfection</h3>
+            <p class="text-gray-600 font-normal leading-relaxed">
+              Flawless performance across every device, ensuring your customers enjoy seamless luxury experiences
+            </p>
+          </div>
+          
+          <div class="text-center group">
+            <div class="w-24 h-24 mx-auto mb-8 bg-gray-100 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <svg class="w-12 h-12 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-normal text-gray-800 mb-4">Lightning Performance</h3>
+            <p class="text-gray-600 font-normal leading-relaxed">
+              Built on Next.js architecture for exceptional speed and scalability as your empire grows
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Theme Preview Section -->
+    <section id="themes" class="py-24 bg-white">
+      <div class="container mx-auto w-full">
+        <div class="text-center mb-16">
+          <h2 class="text-5xl font-normal gradient-text mb-6">Choose Your Aesthetic</h2>
+          <p class="text-xl font-normal text-gray-600 max-w-3xl mx-auto">
+            Four meticulously crafted themes, each designed to elevate your brand
+          </p>
+        </div>
+        
+        <div class="w-full">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+<div class="relative rounded-xl overflow-hidden group hover:scale-101 transition-transform duration-500 px-4 md:px-0">
+              <img src="https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                   alt="Minimalist and Basic"
+                   class="w-full h-80 object-cover">
+<div class="absolute bottom-4 left-4 right-4 text-white font-normal space-y-1 p-4 md:p-6">
+                <div class="text-2xl font-medium">Minimalist & Basic</div>
+                <div class="text-sm opacity-90 leading-snug">Clean lines and subtle sophistication. Perfect for showcasing your pieces with understated luxury.</div>
+                <div class="flex justify-between pt-2">
+                  <span class="text-sm">Explore Theme</span>
+                  <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            
+<div class="relative rounded-xl overflow-hidden group hover:scale-101 transition-transform duration-500 px-4 md:px-0">
+              <img src="https://images.unsplash.com/photo-1613484259733-383234e8e8af?q=80&w=1379&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                   alt="Luxury Theme Preview"
+                   class="w-full h-80 object-cover">
+<div class="absolute bottom-4 left-4 right-4 text-white font-normal space-y-1 p-4 md:p-6">
+                <div class="text-2xl font-medium">Luxury Theme</div>
+                <div class="text-sm opacity-90 leading-snug">Rich textures and dramatic presence. Designed for premium brands that demand attention and reverence.</div>
+                <div class="flex justify-between pt-2">
+                  <span class="text-sm">Explore Theme</span>
+                  <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+<div class="relative rounded-xl overflow-hidden group hover:scale-101 transition-transform duration-500 px-4 md:px-0">
+              <img src="https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                   alt="Minimalist Theme Preview"
+                   class="w-full h-80 object-cover">
+<div class="absolute bottom-4 left-4 right-4 text-white font-normal space-y-1 p-4 md:p-6">
+                <div class="text-2xl font-medium">Minimalist & Basic</div>
+                <div class="text-sm opacity-90 leading-snug">Clean lines and subtle sophistication. Perfect for showcasing your pieces with understated luxury.</div>
+                <div class="flex justify-between pt-2">
+                  <span class="text-sm">Explore Theme</span>
+                  <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            
+<div class="relative rounded-xl overflow-hidden group hover:scale-101 transition-transform duration-500 px-4 md:px-0">
+              <img src="https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                   alt="Minimalist Theme Preview"
+                   class="w-full h-80 object-cover">
+<div class="absolute bottom-4 left-4 right-4 text-white font-normal space-y-1 p-4 md:p-6">
+                <div class="text-2xl font-medium">Luxury Theme</div>
+                <div class="text-sm opacity-90 leading-snug">Rich textures and dramatic presence. Designed for premium brands that demand attention and reverence.</div>
+                <div class="flex justify-between pt-2">
+                  <span class="text-sm">Explore Theme</span>
+                  <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="customize" class="py-24 bg-white relative">
+      <div class="container mx-auto px-6 text-center relative z-10">
+        <h2 class="text-6xl font-normal gradient-text mb-8">Begin Your Legacy</h2>
+        <p class="text-2xl font-normal text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed">
+          Transform your vision into reality with our sophisticated customization suite. 
+          Your extraordinary jewellery store awaits.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-6 justify-center">
+          <a href="customize.html" class="inline-block border-2 border-maroon text-maroon font-normal text-xl py-5 px-12 rounded-full hover-maroon transition-all duration-300">
+            Start Customizing
+          </a>
+<a href="https://maharanasilver.com" target="_blank"
+   class="relative inline-flex items-center justify-center border-2 border-maroon text-maroon font-normal text-xl py-5 px-12 rounded-full hover-maroon transition-all duration-300">
+  
+  <span class="w-2.5 h-2.5 bg-green-500 rounded-full dot-animate"></span>
+  <span class="ml-2">View Live Demo</span>
+</a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="py-16 bg-[#9A602E] text-white">
+      <div class="container mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div>
+            <h3 class="text-3xl font-normal mb-6">Maharana Silver</h3>
+            <p class="font-normal leading-relaxed opacity-90">
+              Crafting digital experiences as precious as the jewels you sell.
+            </p>
+          </div>
+          <div>
+            <h4 class="text-xl font-normal mb-6">Quick Links</h4>
+            <div class="space-y-3">
+              <a href="#features" class="block font-normal opacity-90 hover:opacity-100 transition">Features</a>
+              <a href="#themes" class="block font-normal opacity-90 hover:opacity-100 transition">Themes</a>
+              <a href="#customize" class="block font-normal opacity-90 hover:opacity-100 transition">Customize</a>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-xl font-normal mb-6">Contact</h4>
+            <div class="space-y-3 font-normal opacity-90">
+              <p>info@minsyst.com</p>
+              <p>+91 93214 41491</p>
+              <p>SH. 12 - 14, Meghdoot Tower,</p>
+              <p>Behind St. Thomas Church, Saibaba Nagar, Mira road - East</p>
+              <p>Thane - 401107, Maharashtra, India.</p>
+            </div>
+          </div>
+        </div>
+        <div class="border-t border-white border-opacity-20 mt-12 pt-8 text-center">
+          <p class="font-normal opacity-75">© 2025 Luxe Jewels. Crafted with precision and passion.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      function openSidebar() {
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+        
+        sidebar.classList.add('open');
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      
+      function closeSidebar() {
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+        
+        sidebar.classList.remove('open');
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+      
+      // Close sidebar on window resize if opened
+      window.addEventListener('resize', function() {
+        if (window.innerWidth >= 768) {
+          closeSidebar();
+        }
+      });
+      
+      // Smooth scroll for all anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+
+      // Show/hide fixed navbar on scroll with fade effect
+      window.addEventListener('scroll', function() {
+        const navbarFixed = document.getElementById('navbar-fixed');
+        if (window.scrollY > 100) {
+          navbarFixed.classList.add('visible');
+        } else {
+          navbarFixed.classList.remove('visible');
+        }
+      });
+    </script>
+  </body>
+</html>
